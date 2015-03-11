@@ -18,24 +18,21 @@ if [ -z "${version}" ]; then
     exit 1
 fi
 
-
 echo "Starting Update Role"
-
-
 
 echo "All parameters have been provided..."
 
+#download current role
 knife role show ${role} -f json > temp.json
 
-#cat temp.json
-
+#update role json
 underscore -i temp.json process "data.default_attributes.deploy.versionToDeploy='${version}';data;" -o new.json
 
+#output it for logging
 cat new.json
 
+#upload new json
 knife role from file new.json
-
-#underscore -i gc-deploy-uat1.json process 'data.default_attributes.deploy.versionToDeploy="Trunk_UmamiFrontEnd_7645.prod.com.zip";data;' -o gc-deploy-uat1_new.json
 
 #
 # Finished operations
